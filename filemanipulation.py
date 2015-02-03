@@ -1,6 +1,8 @@
 import urllib2
 from datetime import datetime
-import matplotlib.pyplot as plt
+import matplotlib as mpl
+mpl.use('Agg')
+import matplotlib.pyplot as plt 
 import numpy as np
 import os
 import time
@@ -65,11 +67,11 @@ def firstinterfacefunction(antenna, temp_pressurefilename, color, minallowed, ma
     
     #NAMING TEMP0/5/9 AS TEMP STAGE I/II/III
     if temp_pressurefilename == '0':
-        temp_pressurefilename = 'Stage I'
+        temp_pressurefilename = 'Stage_I'
     elif temp_pressurefilename == '5':
-        temp_pressurefilename = 'Stage II'
+        temp_pressurefilename = 'Stage_II'
     elif temp_pressurefilename == '9':
-        temp_pressurefilename = 'Stage III'
+        temp_pressurefilename = 'Stage_III'
     
     
 
@@ -124,8 +126,8 @@ def firstinterfacefunction(antenna, temp_pressurefilename, color, minallowed, ma
 
         #PLOTTING ONES WITH ERRORS.(TIMEPLOT VS TEMP)    
         if count > 0:
-            print "Device Problem! Attention needed."
-            print 'You have %s errors' % count
+            #print "Device Problem! Attention needed."
+            #print 'You have %s errors' % count
             #print "Errors occur between %s and %s hours on %s" % (firsterror, finalerror, dateplot[0:11])
             #PLOTTING IF ERROR:
             plt.plot(timeplot,temp,linewidth = 1.5, color=color, label = temp_pressure + " " + temp_pressurefilename)
@@ -141,12 +143,12 @@ def firstinterfacefunction(antenna, temp_pressurefilename, color, minallowed, ma
             leg.get_frame().set_alpha(0.5)
             #plt.show()
             #SAVE FIGURE TO OWN DIRECTORY 
-            errorfile = os.path.dirname(__file__) + '/' + antenna + temp_pressure + temp_pressurefilename + '.png'
+            errorfile = os.path.dirname(os.path.abspath(__file__)) + '/' + antenna + temp_pressure + temp_pressurefilename + '.png'
             plt.savefig(errorfile, format = 'png')
             #time.sleep(1)
             plt.hold(False)
-            
-            errordictionary = {'Antenna': antenna , 'Monitor Point': temp_pressure + " " + temp_pressurefilename, 'PathToImagefile': errorfile}
+            #28: STRING SLICE IS FOR RELATIVE PATH NOT ABSOLUTE (SPECIFIC TO SERVER)
+            errordictionary = {'Antenna': antenna , 'Monitor Point': temp_pressure + " " + temp_pressurefilename, 'PathToImagefile': errorfile[28:]}
             errordata.append(errordictionary)
             
             
@@ -167,14 +169,13 @@ def firstinterfacefunction(antenna, temp_pressurefilename, color, minallowed, ma
             leg = plt.legend(fancybox=True, loc=4)
             leg.get_frame().set_alpha(0.5)
             #plt.show()
-            operationalfile = os.path.dirname(__file__) + '/' + antenna + temp_pressure + temp_pressurefilename + '.png'
+            operationalfile = os.path.dirname(os.path.abspath(__file__)) + '/' + antenna + temp_pressure + temp_pressurefilename + '.png'
             plt.savefig(operationalfile, format = 'png')
             #time.sleep(1)
             plt.hold(False)
-            #SAVE OPERATIONAL DATA DICC, ANTENNA, MONITOR POINT, FILE, GREEN CELL.
-            operationaldictionary = {'Antenna': antenna , 'Monitor Point': temp_pressure + " " + temp_pressurefilename, 'PathToImagefile': operationalfile}
+            ##28: STRING SLICE IS FOR RELATIVE PATH NOT ABSOLUTE (SPECIFIC TO SERVER)
+            operationaldictionary = {'Antenna': antenna , 'Monitor Point': temp_pressure + " " + temp_pressurefilename, 'PathToImagefile': operationalfile[28:]}
             operationaldata.append(operationaldictionary)
-            
             #print "No errors for %s-%s-%s ,  on antenna %s ,  temperature reading %s" % (year, month, day, antenna, temperaturereading)
         
     #PROBLEM WITH FILE/NO MONITORDATA , ANTENNA OFF 
@@ -192,7 +193,7 @@ b = ['0']
 
 
 #ONLY LOOPING FIRST 5 ANTENNAS!!
-for j in range(5):
+for j in range(66):
 #PRESSURE
     for i in b:
         firstinterfacefunction(antennaarray[j], str(i), 'k', minallowed, maxallowed, gamma, 'VACUUM_GAUGE_SENSOR', '_PRESSURE', 'Pressure (mbar)')
@@ -238,6 +239,33 @@ header = """<html>
     <th>Image Link</th>
   </tr> """
 
+#GETTING INOPERATIVE LIST OF ANTENNAS:
+usedeantennas=[]
+errorantennas=[]
+operationalantennas=[]
+for item in errordata:
+    a = sorted(item.items())
+    errorantennas.append(a[0][1])
+    #print errorantennas
+for item in operationaldata:
+    a = sorted(item.items())
+    operationalantennas.append(a[0][1])
+    #print operationalantennas
+    
+    
+#GOING TO ADD SECTION FOR CAUTION ANTENNAS /MPs
+usedantennas = operationalantennas + errorantennas    
+
+#inopantennas is list
+inopantennas=[]
+for item in antennaarray:
+    if item not in usedantennas:
+        inopantennas.append(item)
+#print inopantennas
+#prob with operationalantennas?
+#print operationalantennas
+
+
 
 errorrows = ''
 for item in errordata:
@@ -246,17 +274,31 @@ for item in errordata:
     newRow = '<tr> <td>' + str(a[0][1]) + '</td> <td>' +    str(a[1][1])  + '</td> <td> <a href=' + '"' + str(a[2][1]) + '"'+ 'style="color: #FF0000"> Link to 24 hour plot</a> </td> </tr>'
     errorrows +=newRow
 #print errorrows
+#print errordata
     
 
-#print operationaldata
-#operationaldata =[]
+
 #<td> tag can fill cell with green color for example....
 operationalrows =''
 for item in operationaldata:
-    a = sorted(item.items())
-    newRow = '<tr> <td>' + str(a[0][1]) + '</td> <td>' +    str(a[1][1])  + '</td> <td> <a href=' + '"' + str(a[2][1]) + '"'+ 'style="color: #00FF00"> Link to 24 hour plot</a> </td> </tr>'
+    b = sorted(item.items())
+    #print b
+    newRow = '<tr> <td>' + str(b[0][1]) + '</td> <td>' +    str(b[1][1])  + '</td> <td> <a href=' + '"' + str(b[2][1]) + '"'+ 'style="color: #00FF00"> Link to 24 hour plot</a> </td> </tr>'
     operationalrows += newRow
-#print operationalrows
+
+
+
+#TAKE INOPANTENNAS AND MAKE NEXT SECTION OF TABLES, JUST ANTENNAS.
+inoperativerows = ''
+for i in inopantennas:
+    newRow = '<tr> <td>' + i + '</td> <td>' + '</td> <td>' + '</td> </tr>'
+    inoperativerows += newRow
+
+
+
+
+
+
 
 
 footer = """</table>
@@ -264,35 +306,14 @@ footer = """</table>
 </html>"""
 
 #(inoprows) + cautionrows coming later...
-htmlContent = header + errorrows + operationalrows + footer
-print htmlContent
+htmlContent = header + errorrows + operationalrows + inoperativerows + footer
+#print htmlContent
 
 text_file = open("index.html", "w")
 
 text_file.write(htmlContent)
 
 text_file.close()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
