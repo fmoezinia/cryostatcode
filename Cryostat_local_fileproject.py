@@ -11,9 +11,6 @@ import math
 
 
 
-#THIS FILE FOR SERVER ONLY, IF WANT TO USE ON ITS OWN, TAKE OUT NAMESFILE[28:]
-
-
 color=''
 global errordata
 errordata=[]
@@ -158,7 +155,7 @@ def firstinterfacefunction(antenna, temp_pressurefilename, color, minallowed, ma
             #time.sleep(1)
             plt.hold(False)
             #28: STRING SLICE IS FOR RELATIVE PATH NOT ABSOLUTE (SPECIFIC TO SERVER)
-            errordictionary = {'Antenna': antenna , 'Monitor Point': temp_pressure + " " + temp_pressurefilename, 'PathToImagefile': errorfile[28:]}
+            errordictionary = {'Antenna': antenna , 'Monitor Point': temp_pressure + " " + temp_pressurefilename, 'PathToImagefile': errorfile}
             errordata.append(errordictionary)
             
             
@@ -215,8 +212,9 @@ def firstinterfacefunction(antenna, temp_pressurefilename, color, minallowed, ma
                 #time.sleep(1)
                 plt.hold(False)
                 ##28: STRING SLICE IS FOR RELATIVE PATH NOT ABSOLUTE (SPECIFIC TO SERVER)
-                cautiondictionary = {'Antenna': antenna , 'Monitor Point': temp_pressure + " " + temp_pressurefilename, 'PathToImagefile': cautionfile[28:]}
+                cautiondictionary = {'Antenna': antenna , 'Monitor Point': temp_pressure + " " + temp_pressurefilename, 'PathToImagefile': cautionfile}
                 cautiondata.append(cautiondictionary)
+                print min(timeplot),max(timeplot)
             
             else:
                 #OPERATIONAL ANTENNAS PROCESS DATA 
@@ -237,7 +235,7 @@ def firstinterfacefunction(antenna, temp_pressurefilename, color, minallowed, ma
                 #time.sleep(1)
                 plt.hold(False)
                 ##28: STRING SLICE IS FOR RELATIVE PATH NOT ABSOLUTE (SPECIFIC TO SERVER)
-                operationaldictionary = {'Antenna': antenna , 'Monitor Point': temp_pressure + " " + temp_pressurefilename, 'PathToImagefile': operationalfile[28:]}
+                operationaldictionary = {'Antenna': antenna , 'Monitor Point': temp_pressure + " " + temp_pressurefilename, 'PathToImagefile': operationalfile}
                 operationaldata.append(operationaldictionary)
                 #print "No errors for %s-%s-%s ,  on antenna %s ,  temperature reading %s" % (year, month, day, antenna, temperaturereading)
             
@@ -259,7 +257,7 @@ b = ['0']
 
 
 #ONLY LOOPING FIRST 5 ANTENNAS!!
-for j in range(66):
+for j in range(5):
 #PRESSURE
     for i in b:
         firstinterfacefunction(antennaarray[j], str(i), 'k', minallowed, maxallowed, gamma, 'VACUUM_GAUGE_SENSOR', '_PRESSURE', 'Pressure (mbar)')
