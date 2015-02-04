@@ -117,7 +117,7 @@ def firstinterfacefunction(antenna, temp_pressurefilename, color, minallowed, ma
         for minutetohour,hour in zip(minutetohour,hour):
             timeplot.append(minutetohour+hour)
 
-        
+        print timeplot
         #DETECTING ERRORS
         count = 0
         tempindex=[]
@@ -175,7 +175,10 @@ def firstinterfacefunction(antenna, temp_pressurefilename, color, minallowed, ma
                 #print y_3
             for i in temp[len(temp)-7:len(temp)-6]:
                 y_4 = float(i)
-                #print y_4   
+                #print y_4
+            for i in temp[len(temp)-9:len(temp)-8]:
+                y_5 = float(i)
+                #print y_5   
     
     
             for i in timeplot[len(timeplot)-1:len(timeplot)]:
@@ -190,8 +193,11 @@ def firstinterfacefunction(antenna, temp_pressurefilename, color, minallowed, ma
             for i in timeplot[len(timeplot)-7:len(timeplot)-6]:
                 x_4 = float(i)
                 #print x_4  
+            for i in timeplot[len(timeplot)-9:len(timeplot)-8]:
+                x_5 = float(i)
+                #print x_5
     
-            meangradient = ((y_1 - y_2)/(x_1 - x_2) + (y_3 - y_4)/(x_3 - x_4))/2
+            meangradient = ((y_1 - y_2)/(x_1 - x_2) + (y_2 - y_3)/(x_2 - x_3)  +   (y_3 - y_4)/(x_3 - x_4)    +    (y_4 - y_5)/(x_4 - x_5)    )/4
             #print meangradient
             
             if ((meangradient * 5 + y_1) > maxallowed) or ((meangradient * 5 + y_1) < minallowed):
@@ -214,7 +220,6 @@ def firstinterfacefunction(antenna, temp_pressurefilename, color, minallowed, ma
                 ##28: STRING SLICE IS FOR RELATIVE PATH NOT ABSOLUTE (SPECIFIC TO SERVER)
                 cautiondictionary = {'Antenna': antenna , 'Monitor Point': temp_pressure + " " + temp_pressurefilename, 'PathToImagefile': cautionfile}
                 cautiondata.append(cautiondictionary)
-                print min(timeplot),max(timeplot)
             
             else:
                 #OPERATIONAL ANTENNAS PROCESS DATA 
@@ -257,7 +262,7 @@ b = ['0']
 
 
 #ONLY LOOPING FIRST 5 ANTENNAS!!
-for j in range(5):
+for j in range(66):
 #PRESSURE
     for i in b:
         firstinterfacefunction(antennaarray[j], str(i), 'k', minallowed, maxallowed, gamma, 'VACUUM_GAUGE_SENSOR', '_PRESSURE', 'Pressure (mbar)')

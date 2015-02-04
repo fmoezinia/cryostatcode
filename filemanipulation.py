@@ -32,12 +32,12 @@ minallowed9=70.0
 maxallowed9=130.0
 #WHAT ARE REAL RANGES??
 minallowed=0
-maxallowed=0.0002
+maxallowed=0.0001
 gamma0=1
 gamma5=0.6
 gamma9=0.6
 #REAL GAMMA WORKING?
-gamma=4
+gamma=6
 
 antennaarray = ['CM01','CM02','CM03','CM04','CM05','CM06','CM07','CM08','CM09','CM10','CM11','CM12','DA41','DA42','DA43','DA44','DA45',
 'DA46','DA47','DA48','DA49','DA50','DA51','DA52', 'DA53',  'DA54','DA55','DA56','DA57','DA58','DA59','DA60','DA61','DA62','DA63','DA64',
@@ -178,7 +178,10 @@ def firstinterfacefunction(antenna, temp_pressurefilename, color, minallowed, ma
                 #print y_3
             for i in temp[len(temp)-7:len(temp)-6]:
                 y_4 = float(i)
-                #print y_4   
+                #print y_4
+            for i in temp[len(temp)-9:len(temp)-8]:
+                y_5 = float(i)
+                #print y_5   
     
     
             for i in timeplot[len(timeplot)-1:len(timeplot)]:
@@ -193,8 +196,11 @@ def firstinterfacefunction(antenna, temp_pressurefilename, color, minallowed, ma
             for i in timeplot[len(timeplot)-7:len(timeplot)-6]:
                 x_4 = float(i)
                 #print x_4  
+            for i in timeplot[len(timeplot)-9:len(timeplot)-8]:
+                x_5 = float(i)
+                #print x_5
     
-            meangradient = ((y_1 - y_2)/(x_1 - x_2) + (y_3 - y_4)/(x_3 - x_4))/2
+            meangradient = ((y_1 - y_2)/(x_1 - x_2) + (y_2 - y_3)/(x_2 - x_3)  +   (y_3 - y_4)/(x_3 - x_4)    +    (y_4 - y_5)/(x_4 - x_5)    )/4
             #print meangradient
             
             if ((meangradient * 5 + y_1) > maxallowed) or ((meangradient * 5 + y_1) < minallowed):
@@ -258,7 +264,6 @@ a = ['0', '5','9']
 b = ['0']
 
 
-#ONLY LOOPING FIRST 5 ANTENNAS!!
 for j in range(66):
 #PRESSURE
     for i in b:
@@ -291,14 +296,16 @@ for j in range(66):
 header = """<html>
 <!--(to run every x minutes using cron software)-->
 <head>
+<link rel="stylesheet" href="cryostatStyleSheet.css">
 <title> States Of Cryosystems</title>
 <meta http-equiv="refresh" content="500" />	
 </head>
 <body>
-<h1> Refer to Links below to view 24 Hour Plots displaying Cryosystem State <br> <br> Red = Error &nbsp;&nbsp;&nbsp;&nbsp 
- Black = Inoperative &nbsp;&nbsp;&nbsp;&nbsp   Green = Operational &nbsp;&nbsp;&nbsp;&nbsp Yellow = Caution within 5 Hours</h1>
+<h1> <center>State of Cryosystem <br> Today</center> <br> <br> <font color="red"><font size="5">Errors Present: Attention</font> &nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp 
+ <font color="yellow"><font size="5">Showing unstable tendency: Caution</font> &nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp <font color="green"><font size="5">Operational</font> 
+  &nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp <font color="black"><font size="5">Antenna Out of Use</font></h1>
 
-<table border=1 bgcolor=#808082 style="width:90%"> 
+<table border=1 bgcolor=#D3D3D3 style="width:90%"> 
 <tr>
     <th>Antenna Number</th>
     <th>Monitoring</th> 
