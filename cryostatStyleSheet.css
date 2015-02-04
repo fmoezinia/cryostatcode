@@ -8,3 +8,6 @@ body {
        text-align:center; 
        vertical-align:middle;
    }
+   p {
+       font-family: "Helvetica", Times, serif;
+   }

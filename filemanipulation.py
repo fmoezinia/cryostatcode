@@ -302,10 +302,10 @@ header = """<html>
 </head>
 <body>
 <h1> <center>State of Cryosystem <br> Today</center> <br> <br> <font color="red"><font size="5">Errors Present: Attention</font> &nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp 
- <font color="yellow"><font size="5">Showing unstable tendency: Caution</font> &nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp <font color="green"><font size="5">Operational</font> 
+ <font color=#FFE600><font size="5">Showing unstable tendency: Caution</font> &nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp <font color="green"><font size="5">Operational</font> 
   &nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp <font color="black"><font size="5">Antenna Out of Use</font></h1>
 
-<table border=1 bgcolor=#D3D3D3 style="width:90%"> 
+<table border=1 bgcolor=#D3D3D3 style="width:90%" align="center"> 
 <tr>
     <th>Antenna Number</th>
     <th>Monitoring</th> 
@@ -357,7 +357,7 @@ for item in errordata:
 cautionrows=''
 for item in cautiondata:
     c = sorted(item.items())
-    newRow = '<tr> <td>' + str(c[0][1]) + '</td> <td>' +    str(c[1][1])  + '</td> <td> <a href=' + '"' + str(c[2][1]) + '"'+ 'style="color: #FFFF00"> Link to 24 hour plot</a> </td> </tr>'
+    newRow = '<tr> <td>' + str(c[0][1]) + '</td> <td>' +    str(c[1][1])  + '</td> <td> <a href=' + '"' + str(c[2][1]) + '"'+ 'style="color: #FFE600"> Link to 24 hour plot</a> </td> </tr>'
     cautionrows += newRow
     
     
