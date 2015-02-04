@@ -301,6 +301,9 @@ header = """<html>
 <meta http-equiv="refresh" content="500" />	
 </head>
 <body>
+    <div id="main" method="post" action="">
+        <img src="almalogo.jpg" align="middle" id="Smarty" style="width:128px;height:128px"/>
+      </div>
 <h1> <center>State of Cryosystem <br> Today</center> <br> <br> <font color="red"><font size="5">Errors Present: Attention</font> &nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp 
  <font color=#FFE600><font size="5">Showing unstable tendency: Caution</font> &nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp <font color="green"><font size="5">Operational</font> 
   &nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp <font color="black"><font size="5">Antenna Out of Use</font></h1>
@@ -386,6 +389,14 @@ for i in inopantennas:
 
 
 footer = """</table>
+
+
+<footer>
+  <p>Author: Fredric Moezinia</p>
+  <p>Terms of Use:  All information provided on and taken from this page is for use at your own risk.</p>
+  <p>Copyright policy:  All ALMA code is open source: Contact moezinia.r@gmail.com for more back-end program information.</p>
+  <p>For more information, visit: <a href="https://ictwiki.alma.cl/twiki/bin/view/SoftOps/SummerJobs2015 ">https://ictwiki.alma.cl/twiki/bin/view/SoftOps/SummerJobs2015 </a>, or contact Fredric Moezinia at moezinia.r@gmail.com</p>
+</footer>
 </body>
 </html>"""
 
